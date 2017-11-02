@@ -1,0 +1,8 @@
+lang: ru
+description: ""
+description.ru: {{ site.github.project_tagline }}
+keywords: "svg, vector, svg filter, css filter, css animation, javascript"
+keywords.ru: "svg, vector, svg filter, css filter, css animation, javascript"
+sass:
+    sass_dir: _sass
+    style: expanded

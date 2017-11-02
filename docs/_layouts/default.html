@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+{% include comment.html %}
+<!-- GNU/GPL v.3+ -->
+<html lang="ru">
+	{% include head.html %}
+<body>
+<!-- header -->
+<header>
+	<h1>
+		{{ site.title }}
+		{% if page.title %}/{{ page.title }}
+    	{% endif %}
+	</h1>
+</header>
+<!-- nav -->
+<nav>
+</nav>
+<!-- main -->
+<main>
+	{{ content }}
+</main>
+<!-- footer -->
+{% include footer.html %}
+</body>
+</html>
