@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+********************************************************************************
+*  ____                                      ____                              *
+* |  _ \ ___   __ _  __ _ _ __   _____   __ / ___|  ___ _ __ __ _  ___ _   _   *
+* | |_) / _ \ / _` |/ _` | '_ \ / _ \ \ / / \___ \ / _ \ '__/ _` |/ _ \ | | |  *
+* |  _ < (_) | (_| | (_| | | | | (_) \ V /   ___) |  __/ | | (_| |  __/ |_| |  *
+* |_| \_\___/ \__, |\__,_|_| |_|\___/ \_/   |____/ \___|_|  \__, |\___|\__, |  *
+*             |___/                                         |___/      |___/   *
+*                                                                              *
+********************************************************************************
+*                     © Roganov Sergey, Novosibirsk, 2016                      *
+********************************************************************************
+*   This program is free software: you can redistribute it and/or modify       *
+*   it under the terms of the GNU General Public License as published by       *
+*   the Free Software Foundation, either version 3 of the License, or          *
+*   (at your option) any later version.                                        *
+*                                                                              *
+*   This program is distributed in the hope that it will be useful,            *
+*   but WITHOUT ANY WARRANTY; without even the implied warranty of             *
+*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the              *
+*   GNU General Public License for more details.                               *
+*                                                                              *
+*   You should have received a copy of the GNU General Public License          *
+*   along with this program.  If not, see <http://www.gnu.org/licenses/>.      *
+********************************************************************************
+-->
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	viewBox="-1 -1 102 102"
+>
+	<defs>
+		<filter id="draw">
+			<feTurbulence id="ft" baseFrequency=".1" result="turbulence" />
+			<feDisplacementMap in="SourceGraphic" in2="turbulence" scale="1" />
+		</filter>
+		
+		<filter id="paper" x="0" y="0" width="100%" height="100%">
+			<feTurbulence id="papft" type="fractalNoise" baseFrequency=".04" numOctaves="5" result="noi" />
+			<feDiffuseLighting lighting-color="white" surfaceScale="5" result="pap">
+				<feDistantLight azimuth="45" elevation="100" />
+			</feDiffuseLighting>
+		</filter>
+		
+		<pattern id="rsa" width="30" height="20" patternUnits="userSpaceOnUse">
+			<g style="fill: black; stroke: none; font-size: 5px; opacity: .01875;" transform="translate(1, 5) rotate(-33 5.0 5.0)">
+				<path style="fill: black; stroke: none;" d="M1.5,1.5 v7.0 h1.25 v-5.75 h2.25 a2.25,2.25 0 0,1 2.25,2.25 v.5 l-.5,-.5 h-1.75 l3.5,3.5 v-3.5 a3.5,3.5 0 0,0 -3.5,-3.5 z" />
+				<path style="fill: black; stroke: none;" d="M3.25,3.25 v2.5 l2.75,2.75 h1.75 l-3.25,-3.25 v-.75 h2.175 a1.75,1.75 0 0,0 -1.75,-1.25 z" />
+				<path style="fill: black; stroke: none;" d="M3.25,8.5 h2.0 l-2.0,-2.0 z" />
+				<text x="10.0" y="5.0" dy="0.5em">RSA</text>
+			</g>
+		</pattern>
+		
+		<style>
+			#backgound {
+				stroke: lightgray;
+				stroke-width: .25;
+				stroke-dasharray: 2;
+				stroke-dashoffset: 1;
+				filter: url(#paper);
+				fill: white;
+			}
+			
+			path {
+				fill: none;
+				stroke: black;
+				stroke-width: .2;
+			}
+			
+			#digits {
+				filter: url(#draw);
+			}
+			
+			#digits path {
+				stroke-width: .4;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+			}
+			
+			.digit {
+				stroke: black;
+			}
+			
+			.base {
+				stroke: blue;
+			}
+			
+			.index {
+				stroke: red;
+			}
+			
+			.sign {
+				stroke: gray;
+			}
+			
+			.weight {
+				stroke: magenta;
+			}
+			
+			.value {
+				stroke: purple;
+			}
+			
+			#watermark {
+				stroke: none;
+				fill: url(#rsa);
+			}
+			
+			#comment {
+				stroke: none;
+				fill: rgba(0, 0, 0, .125);
+				transform: translate(0, 85px);
+			}
+			
+			#comment text {
+				fill: black;
+				font-size: 2.5px;
+				text-anchor: middle;
+				transition: all 2s;
+			}
+			
+			.show {
+				opacity: 1;
+				transform: translate(0, 0);
+			}
+			
+			.hide {
+				opacity: 0;
+				transform: translate(0, 1em);
+			}
+			
+		</style>
+	</defs>
+	
+	<g id="backgound">
+		<rect x="0" y="0" width="100" height="100"/>
+	</g>
+	
+	<g id="digits" style="transform: translate(0, -10px);">
+		<rect x="0" y="0" width="100" height="100" style="stroke: none; fill: none;"/>
+	</g>
+	
+	<g id="comment">
+		<rect x="0" y="0" width="100" height="15" />
+		<text x="50" y="8" class="hide">
+			Переведём число из двоичной системы счисления в десятичную.
+		</text>
+		<text x="50" y="8" class="hide">
+			Пронумеруем разряды справа налево с нуля.
+		</text>
+		<text x="50" y="8" class="hide">
+			<tspan y="5">
+				Значение каждой цифры умножается
+			</tspan>
+			<tspan x="50" y="10">
+				на основание системы счисления в степени номер разряда.
+			</tspan>
+		</text>
+		<text x="50" y="8" class="hide">
+			Вычисляем «вес» разрядов.
+		</text>
+		<text x="50" y="8" class="hide">
+			Умножаем значение цифр на «веса» разрядов.
+		</text>
+		<text x="50" y="8" class="hide">
+			Вычисляем сумму.
+		</text>
+		<text x="50" y="8" class="hide">
+			Готово!
+		</text>
+	</g>
+	
+	<rect id="watermark" x="0" y="0" width="100" height="100" />
+	<g style="fill: black; stroke: none; font-size: 5px; opacity: .125; transform: scale(.5);">
+		<path style="fill: black; stroke: none;" d="M1.5,1.5 v7.0 h1.25 v-5.75 h2.25 a2.25,2.25 0 0,1 2.25,2.25 v.5 l-.5,-.5 h-1.75 l3.5,3.5 v-3.5 a3.5,3.5 0 0,0 -3.5,-3.5 z" />
+		<path style="fill: black; stroke: none;" d="M3.25,3.25 v2.5 l2.75,2.75 h1.75 l-3.25,-3.25 v-.75 h2.175 a1.75,1.75 0 0,0 -1.75,-1.25 z" />
+		<path style="fill: black; stroke: none;" d="M3.25,8.5 h2.0 l-2.0,-2.0 z" />
+		<text x="10.0" y="5.0" dy="0.5em">Роганов С.А.</text>
+	</g>
+	
+	<script>
+	<![CDATA[
+		var xmlns="http://www.w3.org/2000/svg";
+		
+		window.addEventListener("load", function(){
+			
+			document.querySelector("#draw #ft").setAttribute("seed", Math.floor(Math.random()*1024));
+			document.querySelector("#paper #papft").setAttribute("seed", Math.floor(Math.random()*1024));
+			
+			Digits = document.querySelector("#digits"); // get digits group
+			
+			num = Math.round(33+Math.random()*30); // generate random number
+			bin = num.toString(2); // get it's binary form
+			
+			
+			// make digits and signs
+			
+			for(var i=0; i<bin.length; i++){ // get all paths from digits
+				digit(bin.charAt(i), 25+i*6, 25, 3, 10, "digit"); // get the digits of the numbers binary form
+			}
+			digit(2, 25+i*6, 31, 2, 5, "base", "toggle"); // append index
+			
+			for(var i=0; i<bin.length; i++){ // digits indexes
+				digit(i, 26+(bin.length-i-1)*6, 18, 1.3, 4, "index");
+			}
+			// append equal sign
+			digit("=1", 25+(i+1)*6, 27.5, 4, 4, "sign");
+			digit("=2", 25+(i+1)*6, 27.5, 4, 4, "sign", "toggle");
+			
+			for(var i=0; i<bin.length; i++){ // get all paths from digits
+				digit(bin.charAt(i), 1+i*6*2.5, 45, 2.5, 9, "digit");
+				digit("x1", 1+i*6*2.5+4, 47.5, 3, 3, "sign");
+				digit("x2", 1+i*6*2.5+4, 47.5, 3, 3, "sign");
+				digit(2, 1+i*6*2.5+4+4, 45, 2.5, 9, "base");
+				digit((bin.length-i-1), 1+i*6*2.5+4+4+2, 40, 2, 4, "index");
+				if(i==bin.length-1){
+					digit("=1", 1+i*6*2.5+4+4+3, 47.5, 3, 3, "sign");
+					digit("=2", 1+i*6*2.5+4+4+3, 47.5, 3, 3, "sign", "toggle");
+				}else{
+					digit("+1", 1+i*6*2.5+4+4+3, 47.5, 3, 3, "sign");
+					digit("+2", 1+i*6*2.5+4+4+3, 47.5, 3, 3, "sign");
+				}
+			}
+			
+			var x = 1;
+			for(var i=0; i<bin.length; i++){
+				digit(bin.charAt(i), x, 60, 2.5, 9, "digit");
+				x += 4;
+				digit("x1", x, 62.5, 3, 3, "sign");
+				digit("x2", x, 62.5, 3, 3, "sign");
+				x += 4;
+				var d = Math.pow(2, (bin.length-i-1)).toString();
+				digit(d.charAt(0), x, 60, 2.5, 9, "weight");
+				if(d.length==2){
+					x += 4;
+					digit(d.charAt(1), x, 60, 2.5, 9, "weight");
+				}
+				x += 4;
+				if(i==bin.length-1){
+					digit("=1", x, 62.5, 3, 3, "sign");
+					digit("=2", x, 62.5, 3, 3, "sign", "toggle");
+				}else{
+					digit("+1", x, 62.5, 3, 3, "sign");
+					digit("+2", x, 62.5, 3, 3, "sign");
+				}
+				x += 3;
+			}
+			
+			var x = 1, y=75;
+			for(var i=0; i<bin.length; i++){
+				var d = (Math.pow(2, (bin.length-i-1))*parseInt(bin.charAt(i))).toString();
+				digit(d.charAt(0), x, y, 2.5, 9, "value");
+				if(d.length==2){
+					x += 6;
+					digit(d.charAt(1), x, y, 2.5, 9, "value");
+				}
+				x += 6;
+				if(i==bin.length-1){
+					digit("=1", x, y+2.5, 3, 3, "sign");
+					digit("=2", x, y+2.5, 3, 3, "sign", "toggle");
+				}else{
+					digit("+1", x, y+2.5, 3, 3, "sign");
+					digit("+2", x, y+2.5, 3, 3, "sign");
+				}
+				x += 6;
+			}
+			
+			num = num.toString();
+			for(var i=0; i<num.length; i++){
+				if(i==num.length-1){
+					digit(num.charAt(i), x, y, 2.5, 9, "digit", "toggle");
+				}else{
+					digit(num.charAt(i), x, y, 2.5, 9, "digit");
+				}
+				x += 6;
+			}
+			digit(1, x-3, y+6, 1.5, 4, "base");
+			digit(0, x+.5, y+6, 1.5, 4, "base");
+			
+			// make appear digits in serial
+			
+			var digits = document.querySelectorAll("#digits path");
+			for(var i=0; i<digits.length-1; i++){
+				digits[i].addEventListener("transitionend", function(e){
+					if(e.target.getAttribute("toggle")=="true"){
+						var cts = document.querySelectorAll("#comment text");
+						for(var i=0; i<cts.length; i++){
+							if(cts[i].classList.contains("show"))break;
+						}
+						var ct = cts[i];
+						ct.classList.toggle("show");
+						ct.classList.toggle("hide");
+						var ct = cts[i+1];
+						var o = e.target.nextSibling;
+						ct.addEventListener("transitionend", function(){
+							o.style.strokeDashoffset = 0;
+						});
+						ct.classList.toggle("show");
+						ct.classList.toggle("hide");
+					}else{
+						e.target.nextSibling.style.strokeDashoffset = 0;
+					}
+				});
+			}
+			digits[0].style.strokeDashoffset = 0; // appear first digit
+			
+			// comments
+			CGT = document.querySelector("#comment text");
+			CGT.classList.toggle("show");
+			CGT.classList.toggle("hide");
+		});
+		
+		function digit(n, x, y, w, h, c, o){
+			c = c || "digit";
+			var d = ""; // paths d
+			switch(n){ // select sign to draw
+				case 1:
+				case "1":
+					d += " M" + (x) + "," + (y+h/3);
+					d += " a" + (w*2)+","+(h/3*2) + " 0 0,0 " + (w)+","+(-h/3);
+					d += " l" + (0) + "," + (h);
+					break;
+				case 2:
+				case "2":
+					d += " M" + (x) + "," + (y+w/2);
+					d += " a" + (w/2)+","+(w/2) + " 0 1,1 " + (w)+","+(0);
+					d += " a" + (w)+","+((h-w/2)/2) + " 0 0,1 " + (-w/2)+","+((h-w/2)/2);
+					d += " a" + (w)+","+((h-w/2)/2) + " 0 0,0 " + (-w/2)+","+((h-w/2)/2);
+					d += " l" + (w) + "," + (0);
+					break;
+				case 3:
+				case "3":
+					d += " M" + (x) + "," + (y+h/3);
+					d += " a" + (w/2)+","+(h/2/2) + " 0 1,1 " + (w/2)+","+(h/3/2);
+					d += " a" + (w/2)+","+(h/2/2) + " 0 1,1 " + (-w/2)+","+(h/3/2);
+					break;
+				case 4:
+				case "4":
+					d += " M" + (x+w/2) + "," + (y);
+					d += " l" + (-w/2) + "," + (h*.7);
+					d += " l" + (w) + "," + (0);
+					d += " l" + (0) + "," + (-h*.3);
+					d += " l" + (0) + "," + (h*.6);
+					break;
+				case 5:
+				case "5":
+					d += " M" + (x+w) + "," + (y);
+					d += " h" + (-w*.85);
+					d += " l" + (-w*.15)+","+(h/2);
+					d += " a" + (w/2)+","+(h/3) + " 0 1,1 " + (0)+","+(h/3);
+					break;
+				case 6:
+				case "6":
+					d += " M" + (x+w) + "," + (y+h/4);
+					d += " a" + (w/2)+","+(h/2) + " 0 0,0 " + (-w)+","+(h/2);
+					d += " a" + (w/2)+","+(h/2) + " 0 0,0 " + (w/2)+","+(h/4);
+					d += " a" + (w/2)+","+(h/2) + " 0 0,0 " + (w/2)+","+(-h/4);
+					d += " a" + (w)+","+(h/4) + " 0 0,0 " + (-w)+","+(-h/4);
+					break;
+				case 7:
+				case "7":
+					d += "M" + x + "," + y;
+					d += " l" + (w) + "," + (0);
+					d += " a" + (w)+","+(h) + " 0 0,0 " + (-w/2)+","+(h);
+					break;
+				case 8:
+				case "8":
+					d += " M" + (x+w/2) + "," + (y);
+					d += " a" + (w/2)+","+(h/2/2) + " 0 1,0 " + (0)+","+(h/2);
+					d += " a" + (w/2)+","+(h/2/2) + " 0 1,1 " + (0)+","+(h/2);
+					d += " a" + (w/2)+","+(h/2/2) + " 0 1,1 " + (0)+","+(-h/2);
+					d += " a" + (w/2)+","+(h/2/2) + " 0 1,0 " + (0)+","+(-h/2);
+					break;
+				case 9:
+				case "9":
+					d += " M" + (x+w) + "," + (y+h/4);
+					d += " a" + (w/2)+","+(h/2/2) + " 0 1,0 " + (0)+","+(+.1);
+					d += " a" + (w/2)+","+(h) + " 0 0,1 " + (-w/2)+","+(h/4*3);
+					d += " a" + (w/2)+","+(h/4/2) + " 0 0,1 " + (-w/2)+","+(-h/4/2);
+					break;
+				case "=":
+					d += " M" + (x) + "," + (y+h/4);
+					d += " h" + (w);
+					d += " M" + (x) + "," + (y+h/4*3);
+					d += " h" + (w);
+					break;
+				case "=1":
+					d += " M" + (x) + "," + (y+h/4);
+					d += " h" + (w);
+					break;
+				case "=2":
+					d += " M" + (x) + "," + (y+h/4*3);
+					d += " h" + (w);
+					break;
+				case "+":
+					d += " M" + (x) + "," + (y+h/2);
+					d += " h" + (w);
+					d += " M" + (x+w/2) + "," + (y);
+					d += " v" + (h);
+					break;
+				case "+2":
+					d += " M" + (x) + "," + (y+h/2);
+					d += " h" + (w);
+					break;
+				case "+1":
+					d += " M" + (x+w/2) + "," + (y);
+					d += " v" + (h);
+					break;
+				case "x":
+				case "×":
+					d += " M" + (x) + "," + (y);
+					d += " l" + (w) + "," + (h);
+					d += " M" + (x+w) + "," + (y);
+					d += " l" + (-w) + "," + (h);
+					break;
+				case "x1":
+				case "×1":
+					d += " M" + (x) + "," + (y);
+					d += " l" + (w) + "," + (h);
+					break;
+				case "x2":
+				case "×2":
+					d += " M" + (x+w) + "," + (y);
+					d += " l" + (-w) + "," + (h);
+					break;
+				case 0:
+				case "0":
+				default:
+					d += " M" + (x+w/2) + "," + (y);
+					d += " a" + (w/2)+","+(h/2) + " 0 1,0 0.1,0";
+					break;
+			}
+			
+			var path = document.createElementNS(xmlns, "path"); // create path object
+			path.setAttribute("d", d);                          // make its data
+			path.setAttribute("class", c);                      // make its data
+			
+			if(o!==undefined)path.setAttribute("toggle", "true");
+			
+			var l = path.getTotalLength();
+			path.style.strokeDasharray = l+.1;  // make dasharray length of whle path
+			path.style.strokeDashoffset = l+.1; // and its offset too
+			
+			Digits.appendChild(path);                                  // append it to group
+			path.getBoundingClientRect();                              // recalculate for transition
+			if(c == "sign"){
+				path.style.transition = "stroke-dashoffset 500ms linear";
+			}else
+			{
+				path.style.transition = "stroke-dashoffset 1000ms linear"; // add transition (it will work after dash-offset setting)
+			}
+			
+			return path;
+		}
+		
+	]]>
+	</script>
+</svg>
