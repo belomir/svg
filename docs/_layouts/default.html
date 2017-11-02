@@ -2,22 +2,16 @@
 {% include comment.html %}
 <!-- GNU/GPL v.3+ -->
 <html lang="ru">
-	{% include head.html %}
+{% include head.html %}
 <body>
 <!-- header -->
-<header>
-	<h1>
-		{{ site.title }}
-		{% if page.title %}/{{ page.title }}
-    	{% endif %}
-	</h1>
-</header>
+{% include header.html %}
 <!-- nav -->
 <nav>
 </nav>
 <!-- main -->
 <main>
-	{{ content }}
+{{ content }}
 </main>
 <!-- footer -->
 {% include footer.html %}
