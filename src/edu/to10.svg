@@ -29,6 +29,12 @@
 			</g>
 		</pattern>
 		
+		<symbol id="1" viewBox="0 0 100 100" preserveAspectRatio="none" vector-effect="non-scaling-stroke">
+			<g class="digit" vector-effect="non-scaling-stroke">
+				<path class="stroke" vector-effect="non-scaling-stroke" d="M0,33 a200,66 0 0,0 100,-33 l0,100" />
+			</g>
+		</symbol>
+		
 		<style><![CDATA[
 			#background {
 				stroke: none;
@@ -104,6 +110,28 @@
 				transform: translate(0, 1em);
 			}
 			
+			.stroke {
+				vector-effect: non-scaling-stroke;
+			}
+			
+			.draw {
+				opacity: 0;
+				animation: draw 1s linear forwards;
+			}
+			
+			@keyframes draw {
+				0% {
+					opacity: 0;
+				}
+				1% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 1;
+					stroke-dashoffset: 0;
+				}
+			}
+			
 		]]></style>
 	</defs>
 	
@@ -155,6 +183,14 @@
 	
 	<script>
 	<![CDATA[
+		(function(){
+			var xmlns="http://www.w3.org/2000/svg";
+			var digitSymbols = document.querySelectorAll("symbol");
+			var one = digitSymbols[0].querySelector("g").cloneNode(true);
+			one.setAttribute("transform", "translate(50, 50) scale(.125 .25)");
+			document.querySelector("svg").appendChild(one);
+		})();
+		
 		var xmlns="http://www.w3.org/2000/svg";
 		
 		window.addEventListener("load", function(){
