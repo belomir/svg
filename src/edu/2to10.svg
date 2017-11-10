@@ -295,14 +295,17 @@
 						var o = e.target.nextSibling;
 						ct.addEventListener("transitionend", function(){
 							o.style.strokeDashoffset = 0;
+							o.style.opacity = 1;
 						});
 						ct.classList.toggle("show");
 						ct.classList.toggle("hide");
 					}else{
+						e.target.nextSibling.style.opacity = 1;
 						e.target.nextSibling.style.strokeDashoffset = 0;
 					}
 				});
 			}
+			digits[0].style.opacity = 1;
 			digits[0].style.strokeDashoffset = 0; // appear first digit
 			
 			// comments
@@ -441,6 +444,7 @@
 			var l = path.getTotalLength();
 			path.style.strokeDasharray = l+.1;  // make dasharray length of whle path
 			path.style.strokeDashoffset = l+.1; // and its offset too
+			path.style.opacity = 0;
 			
 			Digits.appendChild(path);                                  // append it to group
 			path.getBoundingClientRect();                              // recalculate for transition
