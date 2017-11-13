@@ -211,14 +211,27 @@
 				dec = parseInt(P.d) || parseInt(P.dec) || parseInt(P.n, base) || parseInt(P.num, base) || parseInt(P.number, base) || Math.round(sDec+Math.random()*(eDec-sDec)); // generate random number
 				num = dec.toString(base); // get it's binary form
 
-
 				// make digits and signs
-
+				var o = {default: {w: 3, h: 10, dx: 3, dy: 0, dl: 5}};
+				o = Object.assign(o, {x: 25, y: 25, w: o.default.w, h: o.default.h, dx: o.default.dx, dy: o.default.dy, dl: o.default.dl, c: "digit"});
 				for(var i=0; i<num.length; i++){ // get all paths from digits
-					digit(num.charAt(i), 25+i*6, 25, 3, 10, "digit"); // get the digits of the numbers binary form
+					o.n = num.charAt(i);
+					digit(o); // get the digits of the numbers binary form
+					o.x += o.default.dx;
 				}
-
-				number(base, 24+i*6, 31, 2, 5, 3, 0, "base", "toggle"); // append index
+				
+				//o.n = Object.assign(o, {n: base, y: })
+				o.n = base;
+				o.y += o.h;
+				o.w /= 2;
+				o.h /= 2;
+				o.dx /= 2;
+				o.y -= o.h/2;
+				o.c = "base";
+				o.toggle = true;
+				number(o); // append index
+				//number(base, 24+i*6, 31, 2, 5, 3, 0, "base", "toggle"); // append index
+				o.toggle = false;
 
 				for(var i=0; i<num.length; i++){ // digits indexes
 					digit(i, 26+(num.length-i-1)*6, 18, 1.3, 4, "index");
@@ -321,14 +334,26 @@
 				CGT.classList.toggle("hide");
 			});
 
-			function number(n, x, y, w, h, dx, dy, c, o){
+			function number(o){ // n, x, y, w, h, dx, dy, c, o
+				var n = o.n || 0;
+				console.log(n);
 				n.toString().split("").forEach(function(e,i,a){
-					digit(e, x+dx*i, y+dy*i, w, h, c, i==--n.toString().length?o:null);
+					o.n = e;
+					o.toggle = o.toggle && i==--n.toString().length;
+					digit(o);
+					o.x += o.dx;
+					//digit({n: e, x: x+dx*i, y: y+dy*i, w: w, h: h, c: c, o: i==--n.toString().length?o:null});
 				});
 			}
 
-			function digit(n, x, y, w, h, c, o){
-				c = c || "digit";
+			function digit(O){//n, x, y, w, h, c, o
+				var n = O.n || O.num || O.d || O.dig || O.digit || O.number;
+				var x = O.x || O.X;
+				var y = O.y || O.Y;
+				var w = O.w || O.W || O.width;
+				var h = O.h || O.H || O.height;
+				var c = O.c || O.class || "digit";
+				var o = O.o || O.toggle;
 				var g = document.createDocumentFragment();
 				switch(n){ // select sign to draw
 					case 1:
@@ -462,6 +487,94 @@
 						p.setAttribute("d", d);
 						g.appendChild(p);
 						break;
+					case "b":
+					case "B":
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y);
+						d += " v" + (h);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y);
+						d += " a" + (w)+","+(h/4) + " 0 1,1 " + "0,"+(h/2);
+						d += " a" + (w)+","+(h/4) + " 0 1,1 " + "0,"+(h/2);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						break;
+					case "c":
+					case "C":
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x+w/2+w/4) + "," + (y+h/4);
+						d += " a" + (w/2)+","+(h/2) + " 0 1,0 " + "0," + (h/2);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						break;
+					case "d":
+					case "D":
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y);
+						d += " v" + (h);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y);
+						d += " a" + (w)+","+(h/2) + " 0 1,1 " + "0," + h;
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						break;
+					case "e":
+					case "E":
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y);
+						d += " v" + (h);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y);
+						d += " h" + (w);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y+h/2);
+						d += " h" + (w);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y+h);
+						d += " h" + (w);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						break;
+					case "f":
+					case "F":
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y);
+						d += " v" + (h);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y);
+						d += " h" + (w);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y+h/2);
+						d += " h" + (w);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						break;
 					case "=":
 						var p = document.createElementNS(xmlns, "path");
 						p.classList.add(c);
@@ -532,6 +645,8 @@
 				}
 
 				Digits.appendChild(g);
+				
+				O.x += w;
 			}
 		})(this);
 	]]>
