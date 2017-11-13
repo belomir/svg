@@ -12,14 +12,14 @@
 			<feTurbulence id="ft" baseFrequency=".1" result="turbulence" />
 			<feDisplacementMap in="SourceGraphic" in2="turbulence" scale="1" />
 		</filter>
-		
+
 		<filter id="paper" x="0" y="0" width="100%" height="100%">
 			<feTurbulence id="papft" type="fractalNoise" baseFrequency=".04" numOctaves="5" result="noi" />
 			<feDiffuseLighting lighting-color="white" surfaceScale="5" result="pap">
 				<feDistantLight azimuth="45" elevation="100" />
 			</feDiffuseLighting>
 		</filter>
-		
+
 		<pattern id="rsa" width="30" height="20" patternUnits="userSpaceOnUse">
 			<g style="fill: black; stroke: none; font-size: 5px; opacity: .01875;" transform="translate(1, 5) rotate(-33 5.0 5.0)">
 				<path style="fill: black; stroke: none;" d="M1.5,1.5 v7.0 h1.25 v-5.75 h2.25 a2.25,2.25 0 0,1 2.25,2.25 v.5 l-.5,-.5 h-1.75 l3.5,3.5 v-3.5 a3.5,3.5 0 0,0 -3.5,-3.5 z" />
@@ -28,7 +28,7 @@
 				<text x="10.0" y="5.0" dy="0.5em">RSA</text>
 			</g>
 		</pattern>
-		
+
 		<style><![CDATA[
 			#backgound {
 				stroke: lightgray;
@@ -38,70 +38,70 @@
 				filter: url(#paper);
 				fill: white;
 			}
-			
+
 			path {
 				fill: none;
 				stroke: black;
 				stroke-width: .2;
 			}
-			
+
 			#digits {
 				filter: url(#draw);
 			}
-			
+
 			#digits path {
 				stroke-width: .4;
 				stroke-linecap: round;
 				stroke-linejoin: round;
 			}
-			
+
 			.digit {
 				stroke: black;
 			}
-			
+
 			.base {
 				stroke: blue;
 			}
-			
+
 			.index {
 				stroke: red;
 			}
-			
+
 			.sign {
 				stroke: gray;
 			}
-			
+
 			.weight {
 				stroke: magenta;
 			}
-			
+
 			.value {
 				stroke: purple;
 			}
-			
+
 			#watermark {
 				stroke: none;
 				fill: url(#rsa);
 			}
-			
+
 			#comment {
 				stroke: none;
 				fill: rgba(0, 0, 0, .125);
 				transform: translate(0, 85px);
 			}
-			
+
 			#comment text {
 				fill: black;
 				font-size: 2.5px;
 				text-anchor: middle;
 				transition: all 2s;
 			}
-			
+
 			.show {
 				opacity: 1;
 				transform: translate(0, 0);
 			}
-			
+
 			.hide {
 				opacity: 0;
 				transform: translate(0, 1em);
@@ -127,18 +127,18 @@
 					stroke-dashOffset: 0;
 				}
 			}
-			
+
 		]]></style>
 	</defs>
-	
+
 	<g id="backgound">
 		<rect x="0" y="0" width="100" height="100"/>
 	</g>
-	
+
 	<g id="digits" style="transform: translate(0, -10px);">
 		<rect x="0" y="0" width="100" height="100" style="stroke: none; fill: none;"/>
 	</g>
-	
+
 	<g id="comment">
 		<rect x="0" y="0" width="100" height="15" />
 		<text x="50" y="8" class="hide">
@@ -168,7 +168,7 @@
 			Готово!
 		</text>
 	</g>
-	
+
 	<rect id="watermark" x="0" y="0" width="100" height="100" />
 	<g style="fill: black; stroke: none; font-size: 5px; opacity: .125; transform: scale(.5);">
 		<path style="fill: black; stroke: none;" d="M1.5,1.5 v7.0 h1.25 v-5.75 h2.25 a2.25,2.25 0 0,1 2.25,2.25 v.5 l-.5,-.5 h-1.75 l3.5,3.5 v-3.5 a3.5,3.5 0 0,0 -3.5,-3.5 z" />
@@ -176,24 +176,24 @@
 		<path style="fill: black; stroke: none;" d="M3.25,8.5 h2.0 l-2.0,-2.0 z" />
 		<text x="10.0" y="5.0" dy="0.5em">Роганов С.А.</text>
 	</g>
-	
+
 	<script>
 	<![CDATA[
 		(function(){
 			var xmlns="http://www.w3.org/2000/svg";
-			
+
 			window.addEventListener("load", function(){
-				
+
 				/* random turbulence seed */
 				document.querySelector("#draw #ft").setAttribute("seed", Math.floor(Math.random()*1024));
 				document.querySelector("#paper #papft").setAttribute("seed", Math.floor(Math.random()*1024));
-				
+
 				/* some dom elements */
 				Digits = document.querySelector("#digits"); // get digits group
-				
+
 				/* url parameters */
 				var P = {};
-				var pString = window.location.href.split("?")[1]; 
+				var pString = window.location.href.split("?")[1];
 				if(pString){
 					var pStrings = pString.split("&");
 					for(i in pStrings){
@@ -208,35 +208,39 @@
 				document.querySelector("#comment_base").innerHTML=base;
 				var sDec = Math.pow(base, l);
 				var eDec = Math.pow(base, l+1)-1;
-				dec = parseInt(P.n) || parseInt(P.num) || parseInt(P.number) || Math.round(sDec+Math.random()*(eDec-sDec)); // generate random number
+				dec = parseInt(P.d) || parseInt(P.dec) || parseInt(P.n, base) || parseInt(P.num, base) || parseInt(P.number, base) || Math.round(sDec+Math.random()*(eDec-sDec)); // generate random number
 				num = dec.toString(base); // get it's binary form
-				
-				
+
+
 				// make digits and signs
-				
+
 				for(var i=0; i<num.length; i++){ // get all paths from digits
 					digit(num.charAt(i), 25+i*6, 25, 3, 10, "digit"); // get the digits of the numbers binary form
 				}
-				digit(base, 25+i*6, 31, 2, 5, "base", "toggle"); // append index
-				
+
+				number(base, 24+i*6, 31, 2, 5, 3, 0, "base", "toggle"); // append index
+
 				for(var i=0; i<num.length; i++){ // digits indexes
 					digit(i, 26+(num.length-i-1)*6, 18, 1.3, 4, "index");
 				}
 				// append equal sign
 				digit("=", 25+(i+1)*6, 27.5, 4, 4, "sign", "toggle");
-				
+
+				var w = 4;
+				var x = -w+1;
 				for(var i=0; i<num.length; i++){ // get all paths from digits
-					digit(num.charAt(i), 1+i*6*2.5, 45, 2.5, 9, "digit");
-					digit("x", 1+i*6*2.5+4, 47.5, 3, 3, "sign");
-					digit(base, 1+i*6*2.5+4+4, 45, 2.5, 9, "base");
-					digit((num.length-i-1), 1+i*6*2.5+4+4+2, 40, 2, 4, "index");
+					number(parseInt(num.charAt(i), base), x=x+=w, 45, 2.5, 9, w, 0, "digit");
+					digit("x", x=x+=w, 47.5, 3, 3, "sign");
+					number(base, x=x+=w, 45, 2.5, 9, 4, 0, "base");
+					x+=base.toString().length*w;
+					digit((num.length-i-1), x-w/4, 40, 2, 4, "index");
 					if(i==num.length-1){
-						digit("=", 1+i*6*2.5+4+4+3, 47.5, 3, 3, "sign", "toggle");
+						digit("=", x, 47.5, 3, 3, "sign", "toggle");
 					}else{
-						digit("+", 1+i*6*2.5+4+4+3, 47.5, 3, 3, "sign");
+						digit("+", x, 47.5, 3, 3, "sign");
 					}
 				}
-				
+
 				var x = 1;
 				for(var i=0; i<num.length; i++){
 					digit(num.charAt(i), x, 60, 2.5, 9, "digit");
@@ -255,7 +259,7 @@
 					}
 					x += 3.5;
 				}
-				
+
 				var x = 1, y=75;
 				for(var i=0; i<num.length; i++){
 					var d = (Math.pow(base, (num.length-i-1))*parseInt(num.charAt(i))).toString();
@@ -270,7 +274,7 @@
 					}
 					x += 4;
 				}
-				
+
 				dec = dec.toString();
 				for(var i=0; i<dec.length; i++){
 					if(i==dec.length-1){
@@ -283,9 +287,9 @@
 				x += 2;
 				digit(1, x-3, y+7, 1.4, 4, "base");
 				digit(0, x+.35, y+7, 1.4, 4, "base");
-				
+
 				// make appear digits in serial
-				
+
 				var digits = document.querySelectorAll("#digits path");
 				for(var i=0; i<digits.length-1; i++){
 					digits[i].addEventListener("animationend", function(e){
@@ -310,13 +314,19 @@
 					});
 				}
 				digits[0].classList.add("draw");
-				
+
 				// comments
 				CGT = document.querySelector("#comment text");
 				CGT.classList.toggle("show");
 				CGT.classList.toggle("hide");
 			});
-			
+
+			function number(n, x, y, w, h, dx, dy, c, o){
+				n.toString().split("").forEach(function(e,i,a){
+					digit(e, x+dx*i, y+dy*i, w, h, c, i==--n.toString().length?o:null);
+				});
+			}
+
 			function digit(n, x, y, w, h, c, o){
 				c = c || "digit";
 				var g = document.createDocumentFragment();
@@ -436,6 +446,22 @@
 						p.setAttribute("d", d);
 						g.appendChild(p);
 						break;
+					case "a":
+					case "A":
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x) + "," + (y+h);
+						d += " l" + (w/2)+","+(-h);
+						d += " l" + (w/2)+","+(h);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						var p = document.createElementNS(xmlns, "path");
+						p.classList.add(c);
+						var d = " M" + (x+w*.1) + "," + (y+h*.7);
+						d += " h" + (w*.85);
+						p.setAttribute("d", d);
+						g.appendChild(p);
+						break;
 					case "=":
 						var p = document.createElementNS(xmlns, "path");
 						p.classList.add(c);
@@ -500,8 +526,8 @@
 					e.style.animationDuration = dur+"ms";
 					e.style.opacity = 0;
 				});
-				
-				if(o!==undefined){
+
+				if(o){
 					p.setAttribute("toggle", "true");
 				}
 
