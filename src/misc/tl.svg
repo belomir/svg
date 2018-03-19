@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- © Roganov Sergey, Novosibirsk, 2016 -->
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg"
+	 xmlns:xlink="http://www.w3.org/1999/xlink"
+	 height="100%"
+	 viewBox="-55 -55 110 110"
+>
+	<style type="text/css">
+		<![CDATA[
+			#main{
+				fill: none;
+				stroke: black;
+				stroke-width: 0.125;
+			}
+			.l{
+				fill: gray;
+				stroke: black;
+				stroke-width: 0.25;
+			}
+			.r{
+				fill: red;
+			}
+			.y{
+				fill: yellow;
+			}
+			.g{
+				fill: lime;
+			}
+			@keyframes gblink {
+				50%   {fill: lime}
+				100%  {fill: gray}
+			}
+			.gb {
+				animation: gblink 1s step-end 5;
+			}
+			.b{
+				fill: black;
+			}
+		]]>
+	</style>
+	
+	<g id="main">
+		<path class="b" d="M-20,50 v-100 h 40 v100 z" />
+		<circle id="r" class="l r" cx="0" cy="-30" r="12.5" onclick="this.classList.toggle('r');" />
+		<circle id="y" class="l" cx="0" cy="0" r="12.5" onclick="this.classList.toggle('y');" />
+		<circle id="g" class="l" cx="0" cy="30" r="12.5" onclick="this.classList.toggle('g');" />
+	</g>
+	
+	<script type="text/javascript">
+		<![CDATA[
+			var gr = document.querySelector("#main");
+			var r = gr.querySelector("#r");
+			var y = gr.querySelector("#y");
+			var g = gr.querySelector("#g");
+			setTimeout(setRY, 5000);
+			function setY(){
+				r.classList.remove("r");
+				g.classList.remove("gb");
+				g.classList.remove("g");
+				y.classList.add("y");
+				setTimeout(setR, 2000);
+			}
+			function setR(){
+				r.classList.add("r");
+				g.classList.remove("gb");
+				g.classList.remove("g");
+				y.classList.remove("y");
+				setTimeout(setRY, 5000);
+			}
+			function setRY(){
+				r.classList.add("r");
+				g.classList.remove("gb");
+				g.classList.remove("g");
+				y.classList.add("y");
+				setTimeout(setG, 2000);
+			}
+			function setG(){
+				r.classList.remove("r");
+				g.classList.remove("gb");
+				g.classList.add("g");
+				y.classList.remove("y");
+				setTimeout(setGB, 7500);
+			}
+			function setGB(){
+				r.classList.remove("r");
+				g.classList.add("gb");
+				g.classList.remove("g");
+				y.classList.remove("y");
+				setTimeout(setY, 5000);
+			}
+		]]>
+	</script>
+	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="translate(-30 0) rotate(-90) scale(.05)">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+		<text x="100" y="50" dy="0.5em">Ро́ганов Сергей</text>
+	</g>
+</svg>

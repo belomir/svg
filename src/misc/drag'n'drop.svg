@@ -1,0 +1,173 @@
+<!-- © Roganov Sergey, Novosibirsk, 2016 -->
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="100%"
+	height="100%"
+	viewBox="0 0 100 100">
+	
+	<style><![CDATA[
+		.draggable {
+			cursor: move;
+		}
+		
+		.vertex {
+			fill: white;
+			stroke: black;
+		}
+		
+		.edge {
+			fill: none;
+			stroke: black;
+		}
+		
+		.caption {
+			fill: black;
+			stroke: none;
+			font-family: sans-serif;
+			font-size: 10px;
+			pointer-events: none;
+		}
+	]]></style>
+	
+	<g id="edges"></g>
+	<g id="vertices"></g>
+	
+	<script><![CDATA[
+		var Rsa_graph = function(){};
+		
+		Rsa_graph.prototype = {
+			dom: {
+				svg: null,
+				vertices: null,
+				edges: null
+			},
+			currentElement: null,
+			xmlns: "http://www.w3.org/2000/svg",
+			parameters: [],
+			vertices: {},
+			matrix: {},
+			newVertex: function(options){
+				var that = this;
+				options.caption = options.caption || "";
+				options.draggable = options.draggable || true;
+				options.append = options.append || true;
+				var g = document.createElementNS(that.xmlns, "g");
+				g.classList.add("vertex");
+				if(options.draggable){
+					g.classList.add("draggable");
+					g.addEventListener("mousedown", function(event){
+						that.currentElement = event.target.parentNode;
+					});
+				}
+				var c = document.createElementNS(that.xmlns, "circle");
+					c.setAttribute("cx", 0);
+					c.setAttribute("cy", 0);
+					c.setAttribute("r", that.parameters["r"]);
+				g.appendChild(c);
+				var t = document.createElementNS(that.xmlns, "text");
+					t.classList.add("caption");
+					t.setAttribute("x", 0);
+					t.setAttribute("y", 0);
+					t.setAttribute("text-anchor", "middle");
+					t.setAttribute("dy", ".4em");
+					t.innerHTML = options.caption;
+				g.appendChild(t);
+				g.setAttribute("transform", "translate("+Math.floor(that.parameters.r+Math.random()*(100-2*that.parameters.r))+","+Math.floor(that.parameters.r+Math.random()*(100-2*that.parameters.r))+")");
+				if(options.append){
+					that.dom.vertices.appendChild(g);
+				}
+				return g;
+			},
+			newEdge: function(src, dst){
+				var that = this;
+				var s = src.getAttribute("transform").match(/translate\(([^\(\)]*)\)/)[1].split(",") || ["0", "0"];
+				var d = dst.getAttribute("transform").match(/translate\(([^\(\)]*)\)/)[1].split(",")|| ["0", "0"];
+				var l = document.createElementNS(that.xmlns, "line");
+				l.classList.add("edge");
+				l.setAttribute("x1", s[0]);
+				l.setAttribute("y1", s[1]);
+				l.setAttribute("x2", d[0]);
+				l.setAttribute("y2", d[1]);
+				that.dom.edges.appendChild(l);
+				return l;
+			},
+			init: function(){
+				var that = this;
+				that.dom.svg = document.querySelector("svg");
+				that.dom.vertices = document.querySelector("#vertices");
+				that.dom.edges = document.querySelector("#edges");
+				
+				that.dom.vertices.addEventListener("mousemove", function(event){
+					if(that.currentElement){
+						var point = that.dom.svg.createSVGPoint();
+						point.x = event.clientX;
+						point.y = event.clientY;
+						point = point.matrixTransform(that.dom.svg.getScreenCTM().inverse());
+						that.currentElement.setAttribute("transform", "translate("+point.x+","+point.y+")");
+						var currentVertex = Object.keys(that.vertices)[Object.values(that.vertices).indexOf(that.currentElement)];
+						if(that.matrix[currentVertex]){
+							Object.keys(that.matrix[currentVertex]).forEach(function(e,i,a){
+								that.matrix[currentVertex][e].setAttribute("x1", point.x);
+								that.matrix[currentVertex][e].setAttribute("y1", point.y);
+							});
+						}
+						Object.keys(that.matrix).forEach(function(e,i,a){
+							if(that.matrix[e][currentVertex]){
+								that.matrix[e][currentVertex].setAttribute("x2", point.x);
+								that.matrix[e][currentVertex].setAttribute("y2", point.y);
+							}
+						});
+					}
+				});
+				that.dom.vertices.addEventListener("mouseup", function(event){
+					that.currentElement = null;
+				});
+				
+				var parameters = window.location.href.split("?");
+				if(parameters.length > 1){
+					parameters[1].split("&").forEach(function(e,i,a){
+						var p = e.split("=");
+						that.parameters[p[0]] = p[1];
+					});
+				}
+				
+				that.parameters.d = that.parameters.d || "0:1,2;1:2";
+				that.parameters.r = that.parameters.r || 10;
+				
+				that.parameters.d.split(";").forEach(function(e,i,a){
+					e = e.split(":");
+					var o = decodeURI(e[0]);
+					var l = e[1].split(",");
+					if(Object.keys(that.vertices).indexOf(o)===-1){
+						that.vertices[o] = that.newVertex({caption: o});
+					}
+					l.forEach(function(e,i,a){
+						e = decodeURI(e);
+						if(Object.keys(that.vertices).indexOf(e)===-1){
+							that.vertices[e] = that.newVertex({caption: e});
+						}
+						if(Object.keys(that.matrix).indexOf(o)===-1){
+							that.matrix[o] = {};
+						}
+						that.matrix[o][e] = that.newEdge(that.vertices[o], that.vertices[e]);
+					});
+				});
+			},
+			load: function(){
+				var that = this;
+				window.addEventListener("load", that.init.bind(that));
+			}
+		};
+		
+		var rsa_graph = new Rsa_graph();
+		rsa_graph.load();
+		
+	]]></script>
+	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="scale(.05)">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+		<text x="100" y="50" dy="0.5em">Ро́ганов Сергей</text>
+	</g>
+</svg>

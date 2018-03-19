@@ -1,0 +1,91 @@
+<!-- Roganov Sergey © 2017 -->
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	viewBox="-2 -2 104 104"
+	width="100%"
+	height="100%"
+>
+	<style><![CDATA[
+		svg {
+			background: #079;
+		}
+		
+		#gear {
+			fill: white;
+			stroke: none;
+			animation: rotation 60s linear infinite;
+		}
+		
+		@keyframes rotation {
+			0%   {transform: rotate(0deg);}
+			100% {transform: rotate(-360deg);}
+		}
+		
+		#Km, #K {
+			font-size: 90px;
+			font-family: sans-serif;
+			font-weight: bold;
+		}
+		
+		#Km {
+			fill: black;
+			stroke: black;
+			stroke-width: 6;
+		}
+		
+		#K {
+			fill: white;
+			stroke: none;
+		}
+	]]></style>
+
+	<mask id="mask">
+		<g>
+			<rect style="fill: white; stroke: none;" x="-50" y="-50" width="100" height="100" />
+			<rect style="fill: black; stroke: none;" x="0" y="-50" width="50" height="50" />
+			<text id="Km" x="-15" y="15">
+				K
+			</text>
+		</g>
+	</mask>
+
+	<g style="transform: translate(50px, 50px);">
+		<g mask="url(#mask)">
+			<path id="gear" d=""/>
+		</g>
+		<text id="K" x="-15" y="15">
+			K
+		</text>
+	</g>
+	
+	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="scale(.05)">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+		<text x="100" y="50" dy="0.5em">Ро́ганов Сергей</text>
+	</g>
+
+	<script><![CDATA[
+		window.addEventListener("load", function(){
+			var p = document.querySelector("#gear");
+			var R = 50;
+			var r = 35;
+			var h = 25;
+			var n = 4;
+			var d = "M" + R + "," + 0;
+			for(var a=0; a<2*Math.PI; a+=Math.PI/n){
+				d += " A" + R + "," + R + " 0 0,1 " + R*Math.cos(a+.25*Math.PI/n) + "," + R*Math.sin(a+.25*Math.PI/n);
+				d += " L" + r*Math.cos(a+.5*Math.PI/n) + "," + r*Math.sin(a+.5*Math.PI/n);
+				d += " A" + r + "," + r + " 0 0,1 " + r*Math.cos(a+.75*Math.PI/n) + "," + r*Math.sin(a+.75*Math.PI/n);
+				d += " L" + R*Math.cos(a+Math.PI/n) + "," + R*Math.sin(a+Math.PI/n);
+			}
+			d += " z";
+			d += " M" + h + "," + 0;
+			d += " a" + h + "," + h + " 0 0,0 " + -2*h + "," + 0;
+			d += " a" + h + "," + h + " 0 0,0 " + 2*h + "," + 0;
+			d += " z";
+			p.setAttribute("d", d);
+		});
+	]]></script>
+</svg>

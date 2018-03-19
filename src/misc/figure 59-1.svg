@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg>
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" width="100%" height="100%" viewBox="-1 -1 102 102" preserveAspectRation="xMidYMid meet" class="scene">
+	<defs>
+		<marker id="arrow-start"
+				viewBox="0 0 15 10"
+				refX="0" refY="5"
+				markerWidth="15"
+				markerHeight="10"
+				orient="auto">
+			<g class="dimentions">
+				<path d="M 15 0 L 0 5 L 15 10 z" />
+			</g>
+		</marker>
+		<marker id="arrow-end"
+				viewBox="0 0 15 10"
+				refX="15" refY="5"
+				markerWidth="15"
+				markerHeight="10"
+				orient="auto">
+			<g class="dimentions">
+				<path d="M 0 0 L 15 5 L 0 10 z" />
+			</g>
+		</marker>
+		<marker id="arrow-start-ext"
+				viewBox="-15 0 30 10"
+				refX="15" refY="5"
+				markerWidth="30"
+				markerHeight="10"
+				orient="auto">
+			<g class="dimentions">
+				<path d="M 0 0 L 15 5 L 0 10 z" />
+				<line x1="0" y1="5" x2="-15" y2="5" style="stroke-width: 1;" />
+			</g>
+		</marker>
+		<marker id="arrow-end-ext"
+				refX="0" refY="5"
+				markerWidth="30"
+				markerHeight="10"
+				orient="auto">
+			<g class="dimentions">
+				<path d="M 15 0 L 0 5 L 15 10 z" />
+				<line x1="15" y1="5" x2="30" y2="5" style="stroke-width: 1;" />
+			</g>
+		</marker>
+	</defs>
+	<style type="text/css">
+		.scene {
+			fill: none;
+		}
+		.border {
+			fill: white;
+			stroke: gray;
+			stroke-width: 0.1;
+			stroke-dasharray: 3 1;
+			stroke-dashoffset: 25%;
+		}
+		.figure {
+			fill: white;
+			stroke: black;
+			stroke-width: 0.5;
+		}
+		.dimentions {
+			fill: blue;
+			stroke: blue;
+			stroke-width: 0.2;
+		}
+		.arrows {
+			marker-start: url(#arrow-start);
+			marker-end: url(#arrow-end);
+		}
+		.arrows-ext {
+			marker-start: url(#arrow-start-ext);
+			marker-end: url(#arrow-end-ext);
+		}
+		.simmetrics {
+			stroke-dasharray: 10 3 1 3;
+			stroke-dashoffset: 0.5;
+		}
+		.size {
+			stroke: none;
+			text-anchor: middle;
+			font-style: italic;
+			font-size: 0.25em;
+		}
+		.vertical {
+			transform: rotate(-90deg);
+		}
+	</style>
+	<rect class="border" x="0" y="0" width="100" height="100" />
+	<g class="figure">
+		<path fill-rule="nonzero" d="M 45 25 v 20 h -20 v 10 h 20 v 20 h 10 v -20 h 20 v -10 h -20 v -20 z" />
+		<g class="dimentions">
+			<line x1="45" y1="25" x2="45" y2="10" />
+			<line x1="55" y1="25" x2="55" y2="10" />
+				<line x1="45" y1="25" x2="5" y2="25" />
+				<line x1="45" y1="75" x2="5" y2="75" />
+			<line x1="25" y1="55" x2="25" y2="90" />
+			<line x1="75" y1="55" x2="75" y2="90" />
+				<line x1="25" y1="45" x2="15" y2="45" />
+				<line x1="25" y1="55" x2="15" y2="55" />
+			<g class="arrows">
+				<line x1="10" y1="25" x2="10" y2="75" />
+				<line x1="25" y1="85" x2="75" y2="85" />
+			</g>
+			<g class="arrows-ext">
+				<line x1="45" y1="15" x2="55" y2="15" />
+				<line x1="18.5" y1="45" x2="18.5" y2="55" />
+			</g>
+			<g class="simmetrics">
+				<line x1="50" y1="20" x2="50" y2="80" />
+				<line x1="20" y1="50" x2="80" y2="50" />
+			</g>
+			<g class="size">
+				<text x="50" y="12.5">10</text>
+				<text x="50" y="90">50</text>
+				<text class="vertical" x="7.5" y="50" style="transform-origin: 7.5px 50px;">50</text>
+				<text class="vertical" x="17" y="50" style="transform-origin: 17px 50px;">10</text>
+			</g>
+		</g>
+	</g>
+	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="scale(.05)">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+		<text x="100" y="50" dy="0.5em">Ро́ганов Сергей</text>
+	</g>
+</svg>

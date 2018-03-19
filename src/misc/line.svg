@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+copyright Roganov Sergey, Novosibirsk, 2017
+-->
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	viewBox="-51 -51 102 102"
+>
+	<style><![CDATA[
+		#backgound {
+			stroke: none;
+			fill: rgba(255,255,255,.5);
+		}
+		
+		.axis {
+			fill: none;
+			stroke: black;
+			stroke-width: .3;
+			marker-end: url(#arrow);
+			/*stroke-width: 2px;
+			shape-rendering: crispEdges;
+			vector-effect: non-scaling-stroke;*/
+		}
+		
+		#scene {
+			transform: scale(1,-1);
+		}
+		
+		#scene text {
+			transform: scale(1,-1);
+			font-size: .5em;
+			fill: black;
+			stroke: none;
+		}
+		
+		.variable {
+			font-style: italic;
+		}
+		
+		.body {
+			stroke: none;
+			fill: rgba(0,0,0,.25);
+			/*fill: url(#hatch);*/
+		}
+		
+		.border {
+			fill: none;
+			stroke: black;
+			stroke-width: 1;
+		}
+		
+		#grid {
+			stroke: gray;
+			stroke-width: .1;
+			fill: none;
+		}
+		
+		#size text {
+			font-size: .35em;
+		}
+		
+		.size {
+			stroke: black;
+			stroke-width: .5;
+			fill: none;
+			marker-start: url(#circle);
+			marker-end: url(#circle);
+		}
+		
+		.figure {
+			stroke-linecap: round;
+		}
+	]]></style>
+	
+	<defs>
+		<marker id="arrow" markerWidth="10" markerHeight="10" refX="0" refY="2.5" orient="auto">
+			<path d="M0,0 L0,5 L10,2.5 z" />
+		</marker>
+		<marker id="circle" markerWidth="2" markerHeight="2" refX="1" refY="1" orient="auto">
+			<circle cx="1" cy="1" r="1" />
+		</marker>
+		<pattern id="hatch" patternUnits="userSpaceOnUse" width="4" height="4">
+			<path d="M0,0 v4 h4 v-4 z" style="stroke: none; fill: rgba(0,0,0,.125);" />
+			<path d="M-1,1 l4,4 M1,-1 l4,4" style="stroke: rgba(0,0,0,.25); stroke-width: .5; fill: none;" />
+		</pattern>
+	</defs>
+	
+	<g id="scene">
+		<g id="backgound">
+			<rect x="-51" y="-51" width="102" height="102"/>
+		</g>
+		
+		<g id="axis">
+			<g id="grid">
+				<g id="horizontalGrid">
+					<path d="M-50,-45 h100" />
+					<path d="M-50,-40 h100" />
+					<path d="M-50,-35 h100" />
+					<path d="M-50,-30 h100" />
+					<path d="M-50,-25 h100" />
+					<path d="M-50,-20 h100" />
+					<path d="M-50,-15 h100" />
+					<path d="M-50,-10 h100" />
+					<path d="M-50,-05 h100" />
+					<path d="M-50,  0 h100" />
+					<path d="M-50, 05 h100" />
+					<path d="M-50, 10 h100" />
+					<path d="M-50, 15 h100" />
+					<path d="M-50, 20 h100" />
+					<path d="M-50, 25 h100" />
+					<path d="M-50, 30 h100" />
+					<path d="M-50, 35 h100" />
+					<path d="M-50, 40 h100" />
+					<path d="M-50, 45 h100" />
+				</g>
+				<g id="horizontalGrid">
+					<path d="M-45,-50 v100" />
+					<path d="M-40,-50 v100" />
+					<path d="M-35,-50 v100" />
+					<path d="M-30,-50 v100" />
+					<path d="M-25,-50 v100" />
+					<path d="M-20,-50 v100" />
+					<path d="M-15,-50 v100" />
+					<path d="M-10,-50 v100" />
+					<path d="M-05,-50 v100" />
+					<path d="M  0,-50 v100" />
+					<path d="M 05,-50 v100" />
+					<path d="M 10,-50 v100" />
+					<path d="M 15,-50 v100" />
+					<path d="M 20,-50 v100" />
+					<path d="M 25,-50 v100" />
+					<path d="M 30,-50 v100" />
+					<path d="M 35,-50 v100" />
+					<path d="M 40,-50 v100" />
+					<path d="M 45,-50 v100" />
+				</g>
+				<g id="size" style="transform: translate(40px, 45px);">
+					<path class="size" d="M0,0 h5" />
+					<g class="caption">
+						<text x="1.5" y="4.25">
+							1
+						</text>
+					</g>
+				</g>
+			</g>
+			<g id="x-axis">
+				<path class="axis" d="M-50,0 h97.5"/>
+				<g class="caption" style="transform: translate(44px, -6px);">
+					<text class="variable">
+						x
+					</text>
+				</g>
+			</g>
+			<g id="y-axis">
+				<path class="axis" d="M0,-50 v97.5" />
+				<g class="caption" style="transform: translate(2px, 44px);">
+					<text class="variable">
+						y
+					</text>
+				</g>
+			</g>
+		</g>
+		
+		<g id="figure" class="figure">
+			<!--<path id="body" class="body" d="M-50,0 h100 v75 h-100 z" />-->
+			<path id="border" class="border" d="M-50,0 h100" />
+		</g>
+	</g>
+		
+	
+	<script><![CDATA[
+		var K = 1, B = 0;
+		
+		var mix=-10, max=10, miy=-10, may=10;
+		
+		function y(x){
+			return K*x+B;
+		}
+		
+		function x(y){
+			return (y-B)/K;
+		}
+		
+		function X(v){
+			return v*5;
+		}
+		
+		function Y(v){
+			return v*5;
+		}
+		
+		window.addEventListener("load", function(){
+			figure = document.querySelector("#figure");
+			body = figure.querySelector("#body");
+			border = figure.querySelector("#border");
+			var P = {};
+			var pString = window.location.href.split("?")[1]; 
+			if(pString){
+				var pStrings = pString.split("&");
+				for(i in pStrings){
+					var p = pStrings[i].split("=");
+					P[p[0]] = p[1];
+				}
+			}
+			K = parseFloat(P["k"]) || parseFloat(P["a"]) || K;
+			B = parseFloat(P["b"]) || B;
+			
+			var x1,x2,y1,y2;
+			
+			if(K>0){
+				x1 = Math.max(x(miy), mix);
+				y1 = Math.max(y(mix), miy);
+				x2 = Math.min(x(may), max);
+				y2 = Math.min(y(max), may);
+			}else{
+				x1 = Math.max(x(may), mix);
+				y1 = Math.min(y(mix), may);
+				x2 = Math.min(x(miy), max);
+				y2 = Math.max(y(max), miy);
+			}
+			
+			border.setAttribute("d", "M"+X(x1) +","+ Y(y1) + " L"+X(x2) +","+ Y(y2));
+		});
+	]]></script>
+	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="translate(-50 -50) scale(.05)">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+		<text x="100" y="50" dy="0.5em">Ро́ганов Сергей</text>
+	</g>
+</svg>

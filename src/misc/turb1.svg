@@ -1,0 +1,55 @@
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	viewBox="-1 -1 102 102"
+>
+	<defs>
+		<filter id="f1">
+			<feTurbulence id="ft" baseFrequency=".25" result="t1" seed="0" />
+			<feDisplacementMap in="SourceGraphic" in2="t1" scale="1.5" xChannelSelector="A" yChannelSelector="A" />
+		</filter>
+		<style><![CDATA[
+			#border {
+				stroke: gray;
+				stroke-width: .1;
+				fill: none;
+			}
+			
+			g#g {
+				stroke: black;
+				stroke-width: 1;
+				fill: rgba(0,0,0,.5);
+				filter: url(#f1);
+			}
+		]]></style>
+	</defs>
+	
+	<rect id="border" x="0" y="0" width="100" height="100" />
+	
+	<g id="g">
+		<path d="m25,25 l50,30" />
+		<circle cx="50" cy="50" r="15" />
+		<rect x="25" y="55" width="60" height="35" />
+	</g>
+	
+	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="scale(.05)">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+		<text x="100" y="50" dy="0.5em">Ро́ганов Сергей</text>
+	</g>
+	
+	<script>
+	<![CDATA[
+		window.addEventListener("load", function(){
+			f = document.querySelector("#ft");
+			setInterval(fp1, 100);
+		});
+		
+		function fp1(){
+			f.setAttribute("seed", parseInt(f.getAttribute("seed"))+1);
+		}
+	]]>
+	</script>
+	
+</svg>

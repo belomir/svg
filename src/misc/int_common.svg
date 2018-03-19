@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+********************************************************************************
+*  ____                                      ____                              *
+* |  _ \ ___   __ _  __ _ _ __   _____   __ / ___|  ___ _ __ __ _  ___ _   _   *
+* | |_) / _ \ / _` |/ _` | '_ \ / _ \ \ / / \___ \ / _ \ '__/ _` |/ _ \ | | |  *
+* |  _ < (_) | (_| | (_| | | | | (_) \ V /   ___) |  __/ | | (_| |  __/ |_| |  *
+* |_| \_\___/ \__, |\__,_|_| |_|\___/ \_/   |____/ \___|_|  \__, |\___|\__, |  *
+*             |___/                                         |___/      |___/   *
+*                                                                              *
+********************************************************************************
+*                     © Roganov Sergey, Novosibirsk, 2017                      *
+********************************************************************************
+-->
+<svg version="1.1"
+	 xmlns="http://www.w3.org/2000/svg"
+	 xmlns:xlink="http://www.w3.org/1999/xlink"
+	 width="100%"
+	 height="100%"
+	 viewBox="-5 -5 110 60"
+>
+	<style type="text/css">
+		<![CDATA[
+			g {
+				fill: none;
+				stroke: black;
+				stroke-width: .75;
+				stroke-linecap: round;
+				stroke-linejoin: round;
+			}
+			
+			text {
+				stroke: none;
+				fill: black;
+				font-size: 5px;
+				font-family: sans-serif;
+				font-style: italic;
+			}
+			
+			.gray {
+				stroke: lightgray;
+				stroke-width: .5;
+				stroke-dasharray: .75 1.5;
+			}
+			#func {
+				stroke-width: .85;
+			}
+			
+			#limits {
+				stroke-width: .25;
+			}
+			
+			#squares {
+				stroke: black;
+				stroke-width: .5;
+				fill: none;
+			}
+			
+			#squares > *:nth-child(odd) {
+				fill: url(#diag_odd);
+			}
+			
+			#squares > *:nth-child(even) {
+				fill: url(#diag_even);
+			}
+			
+			/*#squares > *:hover {
+				fill: url(#diag_mark);
+				stroke: red;
+			}*/
+			
+			#hovers {
+				/*fill: url(#diag_mark);*/
+				fill: rgba(255,0,0,.5);
+				stroke: red;
+				stroke-width: .5;
+			}
+			
+			.hover {
+				opacity: 0;
+			}
+			
+			.hover:hover {
+				opacity: 1;
+			}
+			
+			.path {
+				fill: none;
+				stroke: orange;
+				stroke-width: .5;
+			}
+			
+			#middles {
+				fill: none;
+				stroke: gray;
+				stroke-width: .25;
+				stroke-dasharray: .75 1.5;
+			}
+			
+			#points {
+				fill: rgba(255,0,0,.25);
+				stroke: red;
+				stroke-width: .25;
+			}
+			
+			#axis {
+				marker-end: url(#arrow);
+			}
+			
+			#diag_even > .back {
+				fill: rgba(0,0,255,.2);
+				stroke: none;
+			}
+			
+			#diag_even > .front {
+				fill: none;
+				stroke: rgba(0,0,255,.1);
+				stroke-width: .75;
+			}
+			
+			#diag_odd > .back {
+				fill: rgba(0,255,0,.2);
+				stroke: none;
+			}
+			
+			#diag_odd > .front {
+				fill: none;
+				stroke: rgba(0,255,0,.1);
+				stroke-width: .85;
+			}
+			
+			#diag_mark > .back {
+				fill: rgba(255,0,0,.4);
+				stroke: none;
+			}
+			
+			#diag_mark > .front {
+				fill: none;
+				stroke: rgba(255,0,0,.1);
+				stroke-width: .85;
+			}
+		]]>
+	</style>
+	
+	<defs>
+		<pattern id="diag_odd" patternUnits="userSpaceOnUse" width="4" height="4">
+			<rect class="back" x="0" y="0" width="4" height="4" />
+			<path class="front" d="M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2" />
+		</pattern>
+		<pattern id="diag_even" patternUnits="userSpaceOnUse" width="3" height="3">
+			<rect class="back" x="0" y="0" width="3" height="3" />
+			<path class="front" d="M1,-0.5 l3,3 M-0.5,1 l3,3" />
+		</pattern>
+		<pattern id="diag_mark" patternUnits="userSpaceOnUse" width="2" height="2">
+			<rect class="back" x="0" y="0" width="2" height="2" />
+			<path class="front" d="M1,0 v5" />
+		</pattern>
+		<marker id="arrow"
+				viewBox="0 0 10 10" 
+				refX="1" refY="5"
+				markerWidth="3" 
+				markerHeight="3"
+				orient="auto">
+			<path d="M 0 0 L 10 5 L 0 10 z" />
+		</marker>
+	</defs>
+	 
+	<g id="limits"></g>
+	<g id="func"></g>
+	<g id="squares"></g>
+	<g id="trap"></g>
+	<g id="middles"></g>
+	<g id="points"></g>
+	<g id="axis">
+		<path d="M0,50 h100" />
+	</g>
+	<g id="caps">
+		<text x="100" y="50" dy="-.5em">
+			x
+		</text>
+		<text x="90" y="10" dy="-.5em">
+			f(x)
+		</text>
+		<text x="12" y="50" dy="1em">
+			a
+		</text>
+		<text x="85" y="50" dy="1em">
+			b
+		</text>
+	</g>
+	<g id="hovers"></g>
+	<script><![CDATA[
+		var xmlns = "http://www.w3.org/2000/svg";
+		
+		var par = {
+			n: parseInt(4+16*Math.random()),
+			f: {
+				d: parseInt(Math.random()*5),
+				k: parseInt(Math.random()*2),
+				x: parseInt(3+Math.random()*5)
+			},
+			m: "left",
+			xmin: 15,
+			xmax: 85,
+			ymax: 50
+		}
+		
+		var dom = {};
+		
+		function doms(){
+			dom.s = document.querySelector("#squares");
+			dom.f = document.querySelector("#func");
+			dom.l = document.querySelector("#limits");
+			dom.p = document.querySelector("#points");
+			dom.m = document.querySelector("#middles");
+			dom.t = document.querySelector("#trap");
+			dom.h = document.querySelector("#hovers");
+		}
+		
+		function pars(){
+			var P = {};
+			var pString = window.location.href.split("?")[1]; 
+			if(pString){
+				var pStrings = pString.split("&");
+				for(i in pStrings){
+					var p = pStrings[i].split("=");
+					P[p[0]] = p[1];
+				}
+			}
+			
+			switch(parseInt(Math.random()*6)){
+				case 0: par.m = "left";  break;
+				case 1: par.m = "right"; break;
+				case 2: par.m = "mid";   break;
+				case 3: par.m = "min";   break;
+				case 4: par.m = "max";   break;
+				case 5: par.m = "trap";  break;
+			}
+			
+			par.n = parseInt(P["n"]) || par.n;
+			par.m = P["m"] || par.m;
+		}
+		
+		function f(x){
+			return Math.sin(x/par.f.x-par.f.d)*((par.xmax-x)*par.f.k+x*(1-par.f.k))/5+par.xmin;
+		}
+		
+		function tails(){
+			var dx = 10;
+			
+			var x = par.xmin-dx;
+			var d="M" + x + ", " + f(x);
+			for(var x=par.xmin-dx; x<=par.xmin; x++){
+				d += " L" + x + ", " + f(x);
+			}
+			var p = document.createElementNS(xmlns, "path");
+				p.setAttribute("d", d);
+				p.classList.toggle("gray");
+			dom.f.appendChild(p);
+			
+			var x = par.xmax;
+			var d="M" + x + ", " + f(x);
+			for(var x=par.xmax; x<=par.xmax+dx; x++){
+				d += " L" + x + ", " + f(x);
+			}
+			var p = document.createElementNS(xmlns, "path");
+				p.setAttribute("d", d);
+				p.classList.toggle("gray");
+			dom.f.appendChild(p);
+		}
+		
+		function limits(){
+			var p = document.createElementNS(xmlns, "path");
+			p.setAttribute("d", "M"+par.xmin+","+par.ymax+" V" + f(par.xmin) + " M"+par.xmax+","+par.ymax+" V" + f(par.xmax));
+			dom.l.appendChild(p);
+		}
+		
+		function func(){
+			var x = par.xmin;
+			var d="M" + x + ", " + f(x);
+			for(var x=par.xmin; x<=par.xmax; x++){
+				d += " L" + x + ", " + f(x);
+			}
+			var p = document.createElementNS(xmlns, "path");
+			p.setAttribute("d", d);
+			dom.f.appendChild(p);
+		}
+		
+		function height(x){
+			var X = x+par.dx/2;
+			switch(par.m){
+				case "trap" :
+				case "left" : X = x;                               break;
+				case "right": X = x+par.dx;                        break;
+				case "mid"  : X = x+par.dx/2;                      break;
+				case "max"  : X = (f(x)<f(x+par.dx))?x:(x+par.dx); break;
+				case "min"  : X = (f(x)>f(x+par.dx))?x:(x+par.dx); break;
+			}
+			return {x: X, y: f(X)};
+		}
+		
+		function squares(){
+			var x = par.xmin;
+			for(var i=0; i<par.n; i++){
+				var r = document.createElementNS(xmlns, "rect");
+				var h = height(x);
+				r.setAttribute("x", x);
+				r.setAttribute("y", h.y);
+				r.setAttribute("width", par.dx);
+				r.setAttribute("height", par.ymax-h.y);
+				dom.s.appendChild(r);
+				x += par.dx;
+			}
+		}
+		
+		function traps(){
+			var x = par.xmin;
+			for(var i=0; i<par.n; i++){
+				var p = document.createElementNS(xmlns, "path");
+				p.setAttribute("d", "M"+x+","+par.ymax+" h"+par.dx+" V"+ (f(x+par.dx))+" L"+x+","+f(x)+" z");
+				dom.s.appendChild(p);
+				x += par.dx;
+			}
+			
+			x = par.xmin;
+			var p = document.createElementNS(xmlns, "path");
+			p.classList.toggle("path");
+			var d = "M"+x+","+(f(x));
+			for(var i=0; i<par.n; i++){
+				x += par.dx;
+				d += " L"+x+","+f(x);
+			}
+			p.setAttribute("d", d);
+			dom.t.appendChild(p);
+		}
+		
+		function middles(){
+			if(par.m == "mid"){
+				var x = par.xmin+par.dx/2;
+				for(var i=0; i<par.n; i++){
+					var p = document.createElementNS(xmlns, "path");
+					p.setAttribute("d", "M"+x+","+par.ymax+" V"+f(x));
+					p.classList.toggle("middle");
+					dom.m.appendChild(p);
+					x += par.dx;
+				}
+			}
+		}
+		
+		function points(){
+			var x = par.xmin;
+			for(var i=0; i<par.n; i++){
+				var h = height(x);
+				var p = document.createElementNS(xmlns, "circle");
+				p.setAttribute("r", 1);
+				p.setAttribute("cx", h.x);
+				p.setAttribute("cy", h.y);
+				dom.p.appendChild(p);
+				x += par.dx;
+			}
+			if(par.m=="trap"){
+				var p = document.createElementNS(xmlns, "circle");
+				p.setAttribute("r", 1);
+				p.setAttribute("cx", par.xmax);
+				p.setAttribute("cy", f(par.xmax));
+				dom.p.appendChild(p);
+			}
+		}
+		
+		function hovers(){
+			if(par.m=="trap"){
+				var x = par.xmin;
+				for(var i=0; i<par.n; i++){
+					var p = document.createElementNS(xmlns, "path");
+					p.classList.toggle("hover");
+					p.setAttribute("d", "M"+x+","+par.ymax+" h"+par.dx+" V"+ (f(x+par.dx))+" L"+x+","+f(x)+" z");
+					dom.h.appendChild(p);
+					x += par.dx;
+				}
+			}else{
+				var x = par.xmin;
+				for(var i=0; i<par.n; i++){
+					var r = document.createElementNS(xmlns, "rect");
+					r.classList.toggle("hover");
+					var h = height(x);
+					r.setAttribute("x", x);
+					r.setAttribute("y", h.y);
+					r.setAttribute("width", par.dx);
+					r.setAttribute("height", par.ymax-h.y);
+					dom.h.appendChild(r);
+					x += par.dx;
+				}
+			}
+		}
+		
+		window.addEventListener("load", function(){
+			doms();
+			pars();
+			
+			par.dx = (par.xmax-par.xmin)/par.n;
+			
+			tails();
+			limits();
+			func();
+			if(par.m == "trap"){
+				traps();
+			}else{
+				squares();
+			}
+			middles();
+			points();
+			hovers();
+		});
+	]]></script>
+	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="scale(.03)">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+		<text x="100" y="50" dy="0.5em" style="font-size: 72px; font-style: normal;">Ро́ганов Сергей</text>
+	</g>
+</svg>
