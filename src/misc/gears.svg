@@ -38,6 +38,10 @@
 			fill: white;
 			stroke: none;
 		}
+		
+		#logo {
+			transition: transform 2.5s;
+		}
 	]]></style>
 
 	<mask id="mask">
@@ -50,6 +54,19 @@
 		</g>
 	</mask>
 
+	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="scale(.05)">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+		<text x="100" y="50" dy="0.5em">Ро́ганов Сергей</text>
+	</g>
+	
+	<g id="logo" style="fill: black; stroke: none; font-size: 5em; opacity: .25;">
+		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
+		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
+		<path d="M32.5,85 h20 l-20,-20 z" />
+	</g>
+	
 	<g style="transform: translate(50px, 50px);">
 		<g mask="url(#mask)">
 			<path id="gear" d=""/>
@@ -59,13 +76,6 @@
 		</text>
 	</g>
 	
-	<g style="fill: black; stroke: none; font-size: 5em; opacity: .5;" transform="scale(.05)">
-		<path d="M15,15 v70 h12.5 v-57.5 h22.5 a22.5,22.5 0 0,1 22.5,22.5 v5 l-5,-5 h-17.5 l35,35 v-35 a35,35 0 0,0 -35,-35 z" />
-		<path d="M32.5,32.5 v25 l27.5,27.5 h17.5 l-32.5,-32.5 v-7.5 h21.75 a17.5,17.5 0 0,0 -17.5,-12.5 z" />
-		<path d="M32.5,85 h20 l-20,-20 z" />
-		<text x="100" y="50" dy="0.5em">Ро́ганов Сергей</text>
-	</g>
-
 	<script><![CDATA[
 		window.addEventListener("load", function(){
 			var p = document.querySelector("#gear");
@@ -86,6 +96,11 @@
 			d += " a" + h + "," + h + " 0 0,0 " + 2*h + "," + 0;
 			d += " z";
 			p.setAttribute("d", d);
+			move();
 		});
+		function move(){
+			document.querySelector("#logo").style.transform = "rotate("+(-.5+Math.random())*25+"deg) translate("+(-0.1+Math.random())*50+"px, "+(-.1+Math.random())*50+"px) scale("+(.125+Math.random()*.875)+")";
+			setTimeout(move, 2500+Math.random()*7500);
+		}
 	]]></script>
 </svg>
